@@ -1,25 +1,3 @@
-from logging import error
-from flask import Flask, jsonify, abort, request
-from werkzeug.exceptions import ExpectationFailed, HTTPException
-from flask_cors import CORS
-from sklearn import tree
-
-app = Flask(__name__)
-CORS(app)
-app.config["DEBUG"] = True
-
-@app.errorhandler(Exception)
-def handle_error(e):
-    code = 500
-    if isinstance(e, HTTPException):
-        code = e.code
-    return jsonify(error=str(e)), code
-
-@app.route('/api/get-message', methods=['GET'])
-def getMessage():
-    data = {'message': 'Hello World'}
-    return jsonify(data)
-
 @app.route('/api/predict-fitness', methods = ['POST'])
 def predict_fitness():
     if not request.json or not 'userHeight' in request.json:
@@ -89,4 +67,3 @@ def predict_fitness():
     return jsonify( { 'fitInfo': fitData } ), 201
 
 app.run(debug=True)
-    
